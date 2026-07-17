@@ -36,10 +36,9 @@ class CheckboxDetector:
             best_score = max(scores)
             # Light, thin ticks in some exported forms occupy much less ink
             # than the darker marks in the original template.
-            threshold = 0.05
             responses.append(
                 MANIFESTATIONS[scores.index(best_score)]
-                if best_score >= threshold
+                if best_score >= MARK_THRESHOLD
                 else None
             )
 

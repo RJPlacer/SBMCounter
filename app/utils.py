@@ -1,23 +1,19 @@
 from pathlib import Path
 
+from app.config import OUTPUT_DIR, REPORT_DIR, UPLOAD_DIR, TEMPLATE_DIR
+
 
 def create_folders():
+    """Create every working folder at the same absolute paths config.py uses.
 
-    folders = [
+    Previously this created folders named "output", "reports", etc. relative
+    to the current working directory, which silently diverged from
+    config.OUTPUT_DIR / config.REPORT_DIR whenever main.py was launched from
+    somewhere other than the project root.
+    """
 
-        "output",
-
-        "reports",
-
-        "uploads",
-
-        "templates"
-
-    ]
-
-    for folder in folders:
-
-        Path(folder).mkdir(exist_ok=True)
+    for folder in (OUTPUT_DIR, REPORT_DIR, UPLOAD_DIR, TEMPLATE_DIR):
+        folder.mkdir(parents=True, exist_ok=True)
 
 
 def school_name(pdf):

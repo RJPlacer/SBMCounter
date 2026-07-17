@@ -1,11 +1,13 @@
 import cv2
 import numpy as np
 
+from app.config import NORMALIZED_WIDTH, NORMALIZED_HEIGHT
+
 
 class TableNormalizer:
 
-    WIDTH = 2200
-    HEIGHT = 3200
+    WIDTH = NORMALIZED_WIDTH
+    HEIGHT = NORMALIZED_HEIGHT
 
     def normalize(self, image, binary):
 

@@ -8,6 +8,7 @@ from app.image_processor import ImageProcessor
 from app.table_normalizer import TableNormalizer
 from app.checkbox_detector import CheckboxDetector
 
+
 class Pipeline:
 
     def __init__(self):
@@ -34,32 +35,47 @@ class Pipeline:
             school_id = extracted_id
 
             pages = sorted(folder.glob("page_*.png"))
+            failed_pages = []
 
             for page in pages:
 
                 print(f"Processing {page.name}")
 
-                img, gray, binary = self.processor.preprocess(page)
+                try:
+                    img, gray, binary = self.processor.preprocess(page)
 
-                table = self.normalizer.normalize(
-                    img,
-                    binary
+                    table = self.normalizer.normalize(
+                        img,
+                        binary
+                    )
+
+                    responses = self.detector.detect_page(table)
+                    counter.add_page(responses)
+
+                    for i, response in enumerate(responses, start=1):
+                        print(f"{i:02d}. {response}")
+
+                    output = folder / f"normalized_{page.name}"
+
+                    cv2.imwrite(
+                        str(output),
+                        table
+                    )
+
+                    print("Saved", output)
+
+                except Exception as error:
+                    # One warped/blank/misprinted page shouldn't take down the
+                    # whole school's report -- log it, skip it, and keep going.
+                    print(f"  Skipped {page.name}: {error}")
+                    failed_pages.append(page.name)
+                    continue
+
+            if failed_pages:
+                print(
+                    f"Warning: {len(failed_pages)} page(s) could not be read "
+                    f"for {folder.name}: {', '.join(failed_pages)}"
                 )
-
-                responses = self.detector.detect_page(table)
-                counter.add_page(responses)
-
-                for i, response in enumerate(responses, start=1):
-                    print(f"{i:02d}. {response}")
-
-                output = folder / f"normalized_{page.name}"
-
-                cv2.imwrite(
-                    str(output),
-                    table
-                )
-
-                print("Saved", output)
 
             report = self.excel.generate(
                 REPORT_DIR / f"{folder.name}_report.xlsx",
