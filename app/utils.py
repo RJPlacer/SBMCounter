@@ -9,6 +9,8 @@ def create_folders():
 
         "reports",
 
+        "uploads",
+
         "templates"
 
     ]

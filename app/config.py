@@ -14,6 +14,8 @@ REPORT_DIR = ROOT / "reports"
 
 TEMPLATE_DIR = ROOT / "templates"
 
+UPLOAD_DIR = ROOT / "uploads"
+
 POPPLER_PATH = r"C:\poppler\Library\bin"
 
 # ===============================
@@ -36,4 +38,12 @@ MARK_THRESHOLD = 0.18
 
 ROW_COUNT = 42
 
-COLUMN_COUNT = 5
+COLUMN_COUNT = 4
+
+# The headings in the source checklist, ordered from left to right.
+MANIFESTATIONS = (
+    "Always manifested",
+    "Frequently manifested",
+    "Rarely manifested",
+    "Not yet manifested",
+)

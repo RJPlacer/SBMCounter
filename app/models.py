@@ -1,19 +1,10 @@
-from dataclasses import dataclass
-
+from dataclasses import dataclass, field
 
 @dataclass
-class SchoolResult:
+class SBMAssessment:
 
-    school: str
+    school_name: str = ""
 
-    always: int = 0
+    school_id: str = ""
 
-    frequent: int = 0
-
-    rare: int = 0
-
-    notyet: int = 0
-
-    na: int = 0
-
-    total: int = 42
+    responses: list[str] = field(default_factory=list)

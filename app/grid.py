@@ -1,14 +1,14 @@
 from dataclasses import dataclass
 
+from app.config import COLUMN_COUNT, ROW_COUNT
+
+
 @dataclass
 class Checkbox:
-
     row: int
     column: int
-
     x: int
     y: int
-
     width: int
     height: int
 
@@ -19,27 +19,27 @@ class CheckboxGrid:
     IMAGE_WIDTH = 2200
     IMAGE_HEIGHT = 3200
 
-    # ----- IMPORTANT -----
-    # These values will be calibrated using ONE sample PDF.
-    # After calibration they will work for all schools.
+    # Calibration values
     START_X = 1760
     START_Y = 525
 
     ROW_HEIGHT = 61
-
     COLUMN_GAP = 66
 
     BOX_SIZE = 28
+
+    TOTAL_ROWS = ROW_COUNT
+    TOTAL_COLUMNS = COLUMN_COUNT
 
     def build(self):
 
         boxes = []
 
-        for row in range(42):
+        for row in range(self.TOTAL_ROWS):
 
             y = self.START_Y + row * self.ROW_HEIGHT
 
-            for col in range(5):
+            for col in range(self.TOTAL_COLUMNS):
 
                 x = self.START_X + col * self.COLUMN_GAP
 
@@ -50,7 +50,7 @@ class CheckboxGrid:
                         x=x,
                         y=y,
                         width=self.BOX_SIZE,
-                        height=self.BOX_SIZE
+                        height=self.BOX_SIZE,
                     )
                 )
 
